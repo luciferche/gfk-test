@@ -8,6 +8,9 @@
       "jsx": true
     }
   },
+  "env": {
+    "jest/globals": true
+  },
   "rules": {
     "max-nested-callbacks": [
       "error",
@@ -31,6 +34,7 @@
     "react/jsx-uses-react": "error"
   },
   "plugins": [
-    "react"
+    "react",
+    "jest"
   ]
 }

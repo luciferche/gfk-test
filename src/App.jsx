@@ -1,4 +1,17 @@
 import React from 'react';
 import Style from './App.scss';
 
-export default () => <div className={Style.something}>Hello World</div>;
+const App = (props) => {
+
+  return (
+    <>
+      {
+        props.JSON.items.map(user => {
+          return <div className={Style.something}>{user.login}</div>;
+        })
+      }
+    </>
+  );
+};
+
+export default App;

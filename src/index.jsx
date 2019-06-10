@@ -5,7 +5,16 @@ import App from './App';
 
 const HotApp = hot(App);
 
-render(
-  <HotApp/>,
-  document.getElementById('root')
-);
+export const mount = function () {
+  fetch('https://api.github.com/search/users?q=tom+repos:%3E42+followers:%3E1000')
+    .then(Response => Response.json())
+    .then(JSON => {
+      render(
+        <HotApp JSON={JSON}/>,
+        document.getElementById('root')
+      );
+    });
+};
+
+mount();
+
