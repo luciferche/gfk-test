@@ -1,8 +1,9 @@
-import {mount} from './index';
+import {git addmount} from './index';
 
 describe('Test 1', () => {
   it('Check A', () => {
     mount();
     expect(true).toBe(true);
-  })
-})
+  });
+});
+
