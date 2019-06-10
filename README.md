@@ -1,5 +1,11 @@
 __*GfK Front End Code Challenge*__
 
+__*Scenario*__
+
+You have been recently hired as a senior developer on a startup that is trying to build a web application using GitHub's search API. There are concerns over the quality of the existing codebase; moreover, your architect has decided that the application should use [GitHub's GraphQL API](https://developer.github.com/v4/) instead of its REST API in future.
+
+Your first ticket is as follows: 
+
 __User Story__
 
 *As a:* User 
@@ -26,8 +32,6 @@ __User Story__
 
 *So that:* I can understand their commit history.
 
-
-__Technical Notes__
 
 
 
