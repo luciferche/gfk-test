@@ -1,4 +1,4 @@
-import {git addmount} from './index';
+import {mount} from './index';
 
 describe('Test 1', () => {
   it('Check A', () => {
