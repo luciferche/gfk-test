@@ -15,9 +15,12 @@ class User extends React.Component {
     return (
       <>
       <div className={Style.user}>
-        <img className={Style.avatar} src={this.props.user.avatar_url}/>
-        <span className={Style.user_label}>{this.props.user.login}</span>
-        <span className={Style.avatar_wrapper}> <span className={Style.user_info}>{this.props.user.html_url}</span></span>
+        <span className={Style.avatar_wrapper}>
+          <img className={Style.avatar} src={this.props.user.avatarUrl} />
+        </span>
+        <span className={Style.user_label}>{this.props.user.username}</span>
+        <span className={Style.user_location}>{this.props.user.location}</span>
+        <span className={Style.updatedAt}>{this.props.user.updatedAt}</span>
       </div>
       </>
     );

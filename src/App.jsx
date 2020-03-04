@@ -17,16 +17,22 @@ class App extends React.Component {
 
     this.headerTemplate = (
       <div className={Style.header}>
-        <h1 className={Style.title}>Github users search:</h1>
-        <input type="text" name="username" placeholder="Username" />
-        <button className={Style.btn_search} onClick={this.handleClick}>
-          SEARCH
-        </button>
+        <center /><h1 className={Style.title}>Github users search:</h1><center />
+        <div className={Style.search_wrapper}>
+          <input
+            type="text" placeholder="Username"
+            name="username" onChange={this.handleChange}
+            className={Style.input_search} />
+          <button className={Style.btn_search} onClick={this.handleClick}>
+            SEARCH
+          </button>
+        </div>
       </div>
     );
   }
   handleChange(event) {
     const username = event.target.value;
+    console.log('usernaem', username);
     this.setState(() => ({
       userToSearch: username
     }));
@@ -39,7 +45,7 @@ class App extends React.Component {
   }
 
   async search() {
-    console.log('IMPLEMENT SEARCH', this.state.userToSearch);
+    console.log('IMPLEMENT SEARCH - ' + this.state.userToSearch);
     if (!this.state.userToSearch) {
       return;
     }
@@ -58,14 +64,15 @@ class App extends React.Component {
     return (
       <>
         {this.headerTemplate}
-        <hr/>
+        <div className={Style.user_list}>
+          {
+            this.state.users.map(user => {
+              console.log('mapped user', user);
+              return <User user={user} key={user.id}/>;
+            })
+          }
+        </div>
 
-        {
-
-          this.state.users.map(user => {
-            return <User user={user} key={user.id}/>;
-          })
-        }
       </>
     );
   }

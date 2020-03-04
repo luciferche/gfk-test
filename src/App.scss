@@ -6,26 +6,58 @@
 }
 
 .header {
-  height: 150px;
+  height: 120px;
   
 }
+.input_search {
+  border-radius: 4px;
+  height: 30px;
 
+  width: 200px;
+}
 .btn_search {
-  color: $searchButton;
+  background-color: $searchBackground;
+  border-radius: 4px;
+  color: $mainFont;
+  float: right;
+  height: 30px;
+  margin-right: 50px;
+  width: 100px;
+}
+
+.user_list {
+  border-top: solid 1px $dividerColour;
+  width: 100%;
+  
 }
 .user {
+  align-items: center;
+  background-color: $userCardBackground;
+  // border: solid 1px $dividerColour;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  height: 60px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  // padding: 10px;
   width: 100%;
+  
 
 }
 // .user_info {
 // }
 .user_label {
+  padding-left: 20px;
   width: 50%;
 }
+
+.user_location {
+  padding-left: 10px;
+  width: 100px;
+}
 .avatar_wrapper {
+  text-align: center;
   width: 100px;
 }
 .avatar {

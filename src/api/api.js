@@ -1,30 +1,66 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import axios from 'axios';
-const GITHUB_URL = 'https://api.github.com/search';
+import graph from './graph';
+
+// const GITHUB_URL = 'https://api.github.com/search'; //OLD API
+const githubUrl = 'https://api.github.com/graphql'; //new graphql api
+
+const githubToken = 'c10fa511a578e764a20ad3722ddd2ba273405ed8';
+
+// The Authorization in the header of the request
+const authorization = {Authorization: 'bearer ' + githubToken};
 
 const wrappedApi = axios.create({
-  baseURL: GITHUB_URL
+  baseURL: githubUrl
 });
 
-const makeRequest = (name) => {
-  const url = 'users?q=' + name + '+repos:%3E42+followers:%3E1000';
-  console.log('url ', url);
-  return url;
-};
+const getUserData = async (userId) => {
+  const query = graph.getOneUserQuery(userId);
 
+  return await wrappedApi.post('',
+    {query: query},
+    {headers: authorization}
+  );
+};
 const fetchUsers = async (name) => {
   if (!name) {
     return [];
   }
-  const Response = await wrappedApi.get(makeRequest(name));
+  const query = graph.searchUsersQuery(name);
+  const Response = await wrappedApi.post('',
+    {query: query},
+    {headers: authorization}
+  );
   const JSON = await Response.data;
   console.log('users ', JSON);
-  return JSON.items;
+  if (JSON.errors) {
+    console.error('error with request ', JSON.errors);
+    return [];
+  }
+  if (!JSON.data.search.edges.length) {
+    console.error('nothing found');
+    return [];
+  }
+  const parsedResponse = JSON.data.search.edges.map(node => {
+    var localDate = new Date(node.node.updatedAt);
+
+    return {
+      avatarUrl: node.node.avatarUrl,
+      username: node.node.login,
+      id: node.node.id,
+      updatedAt: localDate.toLocaleString()
+    };
+  });
+  console.log('response from GRAPHQL', parsedResponse);
+
+  return parsedResponse;
 };
 
 // export default axios.create({
 //   baseURL: GITHUB_URL
 // });
 export default {
-  getUsersByName: fetchUsers
+  getUsersByName: fetchUsers,
+  getUserById: getUserData
 };
