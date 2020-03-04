@@ -6,22 +6,19 @@ class User extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      user: props.user
-    };
+    // this.state = {
+    //   user: props.user
+    // };
 
   }
   render() {
     return (
       <>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{this.props.user.login}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{this.props.user.email}</h6>
-          <p class="card-text">Catch phrase and commits:</p>
-        </div>
+      <div className={Style.user}>
+        <img className={Style.avatar} src={this.props.user.avatar_url}/>
+        <span className={Style.user_label}>{this.props.user.login}</span>
+        <span className={Style.avatar_wrapper}> <span className={Style.user_info}>{this.props.user.html_url}</span></span>
       </div>
-      <div className={Style.something}> {this.props.user.login}</div>
       </>
     );
   }

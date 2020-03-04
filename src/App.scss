@@ -1,6 +1,36 @@
 @import 'stylesheets/colours';
 
-.something {
+.title {
   color: $mainFont;
-  font-size: 2em;
+  // font-size: 2em;
 }
+
+.header {
+  height: 150px;
+  
+}
+
+.btn_search {
+  color: $searchButton;
+}
+.user {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  width: 100%;
+
+}
+// .user_info {
+// }
+.user_label {
+  width: 50%;
+}
+.avatar_wrapper {
+  width: 100px;
+}
+.avatar {
+  height: 20px;
+  margin: 0px;
+  width: 20px;
+}
+

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-// import Style from './App.scss';
+import Style from './App.scss';
 import User from './components/User';
 import api from './api/api';
 
@@ -14,17 +14,27 @@ class App extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+
+    this.headerTemplate = (
+      <div className={Style.header}>
+        <h1 className={Style.title}>Github users search:</h1>
+        <input type="text" name="username" placeholder="Username" />
+        <button className={Style.btn_search} onClick={this.handleClick}>
+          SEARCH
+        </button>
+      </div>
+    );
   }
   handleChange(event) {
-    this.setState(...this.state, {
-      userToSearch: event.target.userToSearch
-    });
+    const username = event.target.value;
+    this.setState(() => ({
+      userToSearch: username
+    }));
   }
 
   handleClick() {
     // alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-    this.setState({...this.state, isLoading: true});
+    this.setState({isLoading: true});
     this.search();
   }
 
@@ -34,42 +44,26 @@ class App extends React.Component {
       return;
     }
     const users = await api.getUsersByName(this.state.userToSearch);
-    this.setState({
-      ...this.state, ...{
-        isLoading: false,
-        users
-      }
-    });
+    this.setState(() => ({
+      isLoading: true,
+      users: users
+    }));
+
   }
 
   render() {
     if (!this.state.users.length) {
-      return (
-        <div className="main_header_wrapper">
-          <h1 className="main_title">Github users search:</h1>
-          <input type="text" name="username" placeholder="Username" />
-          <button className="square" onClick={() => this.search()}>
-            SEARCH
-          </button>
-        </div>
-      );
+      return this.headerTemplate;
     }
     return (
       <>
-        <div className="main_header_wrapper">
-          <h1 className="main_title">Github users search:</h1>
-          <input type="text" name="username" placeholder="Username" />
-          <button className="square" onClick={() => this.search()}>
-            SEARCH
-          </button>
-        </div>
-
+        {this.headerTemplate}
         <hr/>
 
         {
 
           this.state.users.map(user => {
-            return <User user={user} />;
+            return <User user={user} key={user.id}/>;
           })
         }
       </>
@@ -84,12 +78,10 @@ class App extends React.Component {
     this.setState({...this.state, isLoading: true});
 
     const users = await api.getUsersByName('luciferche');
-    this.setState({
-      ...this.state, ...{
-        isLoading: false,
-        users
-      }
-    });
+    this.setState(() => ({
+      isLoading: false,
+      users
+    }));
   }
 }
 
