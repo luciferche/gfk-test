@@ -38,9 +38,10 @@ module.exports = ({config}) => {
       MiniCssExtractPlugin.loader,
       {
         loader: 'css-loader', options: {
-          modules: true,
+          modules: {
+            localIdentName: '[local]__[hash:base64:5]',                 //localIdentName moved from parent option to modules config
+          },
           sourceMap: true,
-          localIdentName: '[local]__[hash:base64:5]',
         },
       },
       {

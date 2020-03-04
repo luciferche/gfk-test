@@ -45,10 +45,10 @@ export default function (env, arg) {
             {
               loader: 'css-loader',
               options: {
-                modules: true,
-                sourceMap: true,
-                camelCase: true,
-                localIdentName: '[local]__[hash:base64:5]'
+                modules: {
+                  localIdentName: '[local]__[hash:base64:5]' //localIdentName moved from parent option to modules config
+                },
+                sourceMap: true
               }
             },
             {
@@ -62,7 +62,7 @@ export default function (env, arg) {
             'sass-loader'
           ]
         }
-      ],
+      ]
     },
 
     plugins: [
@@ -149,5 +149,5 @@ export default function (env, arg) {
         })
       ]
     }
-  }
+  };
 }
