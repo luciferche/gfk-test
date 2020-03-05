@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 
-const searchUsersQuery = (name) => {
-  if (!name) {
-    throw Error('name must be provided');
-  }
+/**
+ * Generates user search query that returns basic user info for
+ * all users that match the param
+ * @param {name to be searched against username} name
+ */
+const searchUsersQuery = () => {
   // console.log('offsetnumber', offsetNumber);
-  const query = `query {
-    search(query: "` + name + `", type: USER, first: 100) {
+  const query = `query GetUserByName($name: String!) {
+    search(query: $name, type: USER, first: 100) {
       edges {
         node {
           __typename
@@ -22,22 +24,29 @@ const searchUsersQuery = (name) => {
       }
     }
   }`;
-  console.log('QUERY', query);
-
-  // return JSON.stringify(query);
+  // console.log('QUERY', query);
   return query;
 };
 
-const getOneUserQuery = (userId) => {
-  if (!userId) {
-    throw Error('userId must be provided');
-  }
-  const query = 'node(id: "' + userId + '"'
-  + '... on User {'
-  + '     id'
-  + '     email'
-  + '}'
-  + '}';
+const getOneUserQuery = () => {
+
+  const query = `query GetOneUserQuery($userLogin: String!) {
+    user(login: $userLogin) {
+      contributionsCollection {
+        commitContributionsByRepository {
+          contributions(orderBy: {field: OCCURRED_AT, direction: DESC}, first: 10) {
+            nodes {
+              commitCount
+              occurredAt
+            }
+          }
+          repository {
+            nameWithOwner
+          }
+        }
+      }
+    }
+  }`;
   return query;
 
 };

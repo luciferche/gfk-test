@@ -57,6 +57,8 @@ class App extends React.Component {
 
   }
 
+  // onUserClick() {}
+
   render() {
     if (!this.state.users.length) {
       return this.headerTemplate;

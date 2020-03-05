@@ -1,5 +1,8 @@
 @import 'stylesheets/colours';
 
+body {
+  font-family: 'Roboto', sans-serif;
+}
 .title {
   color: $mainFont;
   // font-size: 2em;
@@ -15,6 +18,7 @@
 
   width: 200px;
 }
+
 .btn_search {
   background-color: $searchBackground;
   border-radius: 4px;
@@ -33,17 +37,22 @@
 .user {
   align-items: center;
   background-color: $userCardBackground;
+  box-shadow: 1px 1px 5px 2px $shadowColour;
+
   // border: solid 1px $dividerColour;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   height: 60px;
-  margin-bottom: 2px;
-  margin-top: 2px;
+  // margin-bottom: 3px;
+  margin-top: 5px;
   // padding: 10px;
   width: 100%;
   
 
+}
+.user:hover {
+  outline-width: 0;
 }
 // .user_info {
 // }
@@ -56,13 +65,16 @@
   padding-left: 10px;
   width: 100px;
 }
+.user_updated_at {
+  font-size: small;
+}
 .avatar_wrapper {
   text-align: center;
   width: 100px;
 }
 .avatar {
-  height: 20px;
+  height: 30px;
   margin: 0px;
-  width: 20px;
+  width: 30px;
 }
 

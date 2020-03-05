@@ -16,21 +16,86 @@ const wrappedApi = axios.create({
   baseURL: githubUrl
 });
 
-const getUserData = async (userId) => {
-  const query = graph.getOneUserQuery(userId);
-
-  return await wrappedApi.post('',
-    {query: query},
-    {headers: authorization}
-  );
+const sortByDateDesc = (a, b) => {
+  const dateA = new Date(a.occurredAt);
+  const dateB = new Date(b.occurredAt);
+  return dateB - dateA;
 };
-const fetchUsers = async (name) => {
-  if (!name) {
+
+const parseResponse = (data) => {
+  if (data.errors) {
+    // eslint-disable-next-line guard-for-in
+    for (const err in data.errors) {
+      console.error('error ', err);
+    }
+    throw new Error('error fetching user commits');
+  }
+  if (!data || !data.data || !data.data.user) {
+    console.log('empty users array', data);
     return [];
   }
+  console.log('USER', data.data.user);
+
+  if (!data.data.user.contributionsCollection.commitContributionsByRepository.length) {
+    console.log('empty contributions array');
+    return [];
+  }
+
+  const commits = data.data.user
+    .contributionsCollection
+    .commitContributionsByRepository
+    .flatMap(commitsByRepo => {
+      let repoName = '';
+      if (commitsByRepo.repository) {
+        repoName = commitsByRepo.repository.nameWithOwner;
+      }
+      const flatted = commitsByRepo.contributions.nodes.map(node => {
+        return {
+          repository: repoName,
+          ...node
+        };
+      });
+      // console.log('contributionflatted', flatted);
+      return flatted;
+    });
+
+  const sorted = commits.sort(sortByDateDesc);
+  return sorted;
+};
+
+const getUserData = async (userLogin) => {
+  if (!userLogin) {
+    //username not passed to the component
+    return [];
+
+  }
+  const query = graph.getOneUserQuery(userLogin);
+  // try {
+  const response = await wrappedApi.post('',
+    {
+      query: query,
+      variables: {userLogin}
+    },
+    {headers: authorization}
+  );
+  const parsed = parseResponse(response.data);
+
+  // console.log('COMMITS', parsed);
+  return parsed;
+  // } catch (error) {
+  //   console.error('EROR', error);
+  // }
+  // return [];
+
+};
+const fetchUsers = async (name) => {
   const query = graph.searchUsersQuery(name);
+  console.log('QUERY ', query);
   const Response = await wrappedApi.post('',
-    {query: query},
+    {
+      query: query,
+      variables: {name}
+    },
     {headers: authorization}
   );
   const JSON = await Response.data;
@@ -63,5 +128,6 @@ const fetchUsers = async (name) => {
 // });
 export default {
   getUsersByName: fetchUsers,
-  getUserById: getUserData
+  getUserData: getUserData
 };
+
