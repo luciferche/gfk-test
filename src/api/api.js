@@ -6,7 +6,8 @@ import graph from './graph';
 // const GITHUB_URL = 'https://api.github.com/search'; //OLD API
 const githubUrl = 'https://api.github.com/graphql'; //new graphql api
 
-const githubToken = 'c10fa511a578e764a20ad3722ddd2ba273405ed8';
+// const githubToken = 'c10fa511a578e764a20ad3722ddd2ba273405ed8';
+const githubToken = '565c75dbd633ba7d8980604d1d55ed1d6105996d';
 
 // The Authorization in the header of the request
 const authorization = {Authorization: 'bearer ' + githubToken};

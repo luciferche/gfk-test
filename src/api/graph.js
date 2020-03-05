@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 
 const searchUsersQuery = (name) => {
+  if (!name) {
+    throw Error('name must be provided');
+  }
   // console.log('offsetnumber', offsetNumber);
   const query = `query {
     search(query: "` + name + `", type: USER, first: 100) {
@@ -26,6 +29,9 @@ const searchUsersQuery = (name) => {
 };
 
 const getOneUserQuery = (userId) => {
+  if (!userId) {
+    throw Error('userId must be provided');
+  }
   const query = 'node(id: "' + userId + '"'
   + '... on User {'
   + '     id'
