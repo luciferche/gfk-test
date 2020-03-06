@@ -34,13 +34,12 @@ const parseResponse = (data) => {
     console.log('empty users array', data);
     return [];
   }
-  console.log('USER', data.data.user);
+  // console.log('USER', data.data.user);
 
   if (!data.data.user.contributionsCollection.commitContributionsByRepository.length) {
     console.log('empty contributions array');
     return [];
   }
-
   const commits = data.data.user
     .contributionsCollection
     .commitContributionsByRepository
@@ -57,7 +56,19 @@ const parseResponse = (data) => {
       });
       // console.log('contributionflatted', flatted);
       return flatted;
+    })
+    .map((commit, index) => {
+      var localDate = new Date(commit.occurredAt);
+      return {
+        ...commit,
+        occurredAt: localDate.toLocaleString(),
+        date: localDate.toDateString,
+        time: localDate.toLocaleTimeString,
+        id: index + 1
+      };
     });
+
+  console.log('commit - ', commits);
 
   const sorted = commits.sort(sortByDateDesc);
   return sorted;

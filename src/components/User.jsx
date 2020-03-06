@@ -14,26 +14,43 @@ class User extends React.Component {
 
   }
   // this.setState({...this.state, isLoading: true});
-  click(event) {
-    console.log('EVENT', event);
-    event.preventDefault();
-    this.userClicked();
-  }
+  // click(event) {
+  //   console.log('EVENT', event);
+  //   event.preventDefault();
+  //   this.userClicked();
+  // }
+
   async userClicked() {
     console.log('userclicked', this.props.user.username);
 
-    // if (this.state.commits.length) {
-    //   console.log('present commits in state already');
-    //   return;
-    // }
-    const fetchedCommits = await api.getUserData(this.props.user.username);
-    this.setState((prevState) => {
-      const commits = prevState.commits.concat(fetchedCommits);
+    if (this.state.commits.length) {
+      console.log('present commits in state already');
+      this.props.setParentCommits(this.state.commits, this.props.user.username);
+      this.props.toggleModal();
 
-      return {
-        commits: commits
-      };
-    });
+      return;
+    }
+    try {
+      const fetchedCommits = await api.getUserData(this.props.user.username);
+      this.setState({
+        commits: fetchedCommits
+      });
+      this.props.setParentCommits(fetchedCommits, this.props.user.username);
+
+      // this.setState((prevState) => {
+      //   const commits = prevState.commits.concat(fetchedCommits);
+      //   this.props.toggleModal();
+      //   return {
+      //     commits: commits,
+      //     commitsToShow: commits
+      //   };
+      // });
+      this.props.toggleModal();
+
+    } catch (error) {
+      console.error('error fetching user data', error);
+    }
+
   }
   render() {
     return (
@@ -49,6 +66,7 @@ class User extends React.Component {
         <span className={Style.user_location}>{this.props.user.location}</span>
         <span className={Style.user_updated_at}>{this.props.user.updatedAt}</span>
       </div>
+      {/* <Modal commits={this.state.commits} /> */}
       </>
     );
   }
