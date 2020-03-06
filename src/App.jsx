@@ -79,7 +79,7 @@ class App extends React.Component {
     this.setState(() => ({
       userToSearch: username
     }));
-    console.log('STATE SET AFTER - handleChange');
+    console.log('STATE SET AFTER - handleChange', this.state);
 
   }
 
@@ -110,7 +110,7 @@ class App extends React.Component {
   // }
 
   render() {
-    console.log('called render APP');
+    console.log('called render APP', this.state.users.length);
     if (!this.state.users.length) {
       return this.headerTemplate;
     }
@@ -159,26 +159,38 @@ class App extends React.Component {
       isLoading: false,
       users: users.slice(0, pageLength)
     }));
-    console.log('STATE SET AFTER - await in didmount');
+    console.log('STATE SET AFTER - await in didmount', this.state.users);
   }
 }
 
 //helper component for rendering list of users from props
-const UserList = ((props) => {
-  return (
-    <div className={Style.user_list}>
-      {
-        props.users.map(user => {
-          return <User user={user}
-            key={user.id}
-            onClick={this.onUserClick}
-            toggleModal={this.toggleModal}
-            setParentCommits={this.setCommitsToShow}
-          />;
-        })
-      }
-    </div>
-  );
-});
+class UserList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: props.users.slice(0, pageLength)
+    };
+
+  }
+
+  render() {
+    return (
+      <div className={Style.user_list}>
+        {
+          this.props.users.map(user => {
+            return <User user={user}
+              key={user.id}
+              onClick={this.props.onUserClick}
+              toggleModal={this.props.toggleModal}
+              setParentCommits={this.props.setCommitsToShow}
+            />;
+          })
+        }
+      </div>
+    );
+  }
+
+}
 
 export default App;
