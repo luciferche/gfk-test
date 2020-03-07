@@ -20,7 +20,6 @@ class Modal extends React.Component {
 
     return <CommitsModal
       show={this.props.show}
-      commits={this.props.commits}
       username={this.props.username}
       onClose={this.props.onClose}>
     Here's some content for the modal

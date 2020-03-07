@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable no-unused-expressions */
 
 import React from 'react';
 import Style from '../App.scss';
@@ -17,6 +16,7 @@ class HeaderSearch extends React.Component {
       value: '',
       username: props.username
     };
+    console.log('this.username', this.state.username);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
@@ -25,14 +25,12 @@ class HeaderSearch extends React.Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       //enter clicked, do the search
-      console.log('handleEnter', this.state);
       this.props.onClick(this.state.value);
     }
   }
 
   handleChange(event) {
     const username = event.target.value;
-    console.log('handlechange', username);
     this.setState(() => ({
       value: username
     }));
@@ -49,7 +47,9 @@ class HeaderSearch extends React.Component {
             name="username"
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
-            onFocus="this.value = this.value;" //hack for setting cursor to the end of input
+            onFocus={() => {
+              this.value = this.value;
+            }} //hack for setting cursor to the end of input
             value={this.state.username}
             className={Style.input_search} />
           <button className={Style.btn_search} onClick={() => this.props.onClick(this.state.value)}>

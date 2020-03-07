@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
-
 import React from 'react';
 import ShowMoreButton from './ShowMoreButton';
 import Style from '../App.scss';
 import User from './User';
 import api from '../api/api';
+import EmptyList from './EmptyList';
 
-// const pageLength = 10;
 const TAG = '@@@@@ User List @@@@@  ';
 
 //helper component for rendering list of users from props
@@ -19,20 +18,7 @@ class UserList extends React.Component {
       showLoadMore: false,
       cursorLast: null
     };
-    // this.onShowMore = this.onShowMore.bind(this);
   }
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.users !== this.props.users) {
-  //     console.log('POKEMONS state has changed.');
-  //     this.setState(() => {
-  //       return {
-  //         users: this.props.users.slice(0, this.props.pageLength),
-  //         showMore: this.props.users.length > this.props.pageLength
-  //       };
-  //     });
-  //   }
-  // }
 
   /**
    * Async function called on button click to load more users
@@ -51,11 +37,13 @@ class UserList extends React.Component {
       showLoadMore: result.hasMore,
       cursorLast: result.cursorLast
     }));
-    console.log(TAG + 'ON SHOW MORE #### - state set', this.state);
   }
 
+  /**
+   * Overriding function that gets called on every update of the properties of the component
+   * @param {previous properties that the component held} prevProps
+   */
   componentDidUpdate(prevProps) {
-    console.log('component did update', this.props);
     if (prevProps.username !== this.props.username) {
       this.setState(() => {
         return {
@@ -70,7 +58,7 @@ class UserList extends React.Component {
   }
 
   async fetchUsers(cursorLast) {
-    console.log('STATE IN FETCH USERS', this.state);
+    // console.log('STATE IN FETCH USERS', this.state);
     const result = await api.getUsersByName(this.props.username, cursorLast);
     this.setState((prevState) => ({
       users: [...prevState.users, ...result.users],
@@ -80,16 +68,16 @@ class UserList extends React.Component {
   }
 
   render() {
-
-    // useEffect((state, props) => {
-
-    // });
-    // console.log(TAG + ' RENDER - list to show size', this.state.username);
     var showMoreButton;
     //if username isn't passed to the component render empty list
     if (!this.props.username) {
       return (
         <EmptyList title="No username entered"/>
+      );
+    }
+    if (this.state.users.length === 0) {
+      return (
+        <EmptyList title="No users found"/>
       );
     }
     if (this.state.showLoadMore) {
@@ -101,12 +89,12 @@ class UserList extends React.Component {
       <div className={Style.user_list}>
         {
           this.state.users.map(user => {
-            return <User user={user}
+            return <User {...user }
               key={user.id}
               onUserClick={this.props.onUserClick}
               toggleModal={this.props.toggleModal}
               /*setParentCommits={this.props.setParentCommits}*/
-              getUserCommits={this.props.getUserCommits}
+              // getUserCommits={this.props.getUserCommits}
             />;
           })
         }
@@ -132,13 +120,5 @@ class UserList extends React.Component {
     this.fetchUsers(null);
   }
 }
-const EmptyList = (props) => {
-  // console.log('EMPTY LIST ', props);
-  return (
-    <div className={Style.empty_list}>
-      <h3 className={Style.empty_list_text}>{props.title}</h3>
-    </div>
-  );
-};
 
 export default UserList;
