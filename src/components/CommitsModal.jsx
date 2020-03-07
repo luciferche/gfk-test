@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import Commit from './Commit';
 import Style from '../stylesheets/Commit.scss';
+import ShowMoreButton from './ShowMoreButton';
 
 // import ReactDOM from 'react-dom';
 const pageLength = 20;
@@ -34,7 +35,7 @@ class CommitsModal extends Component {
       this.setState((prevState, props) => {
         return {
           showMore: lastElementIndex < props.commits.length,
-          commits: prevState.state.commits.concat(props.commits.slice(prevState.commits.length, lastElementIndex))
+          commits: prevState.commits.concat(props.commits.slice(prevState.commits.length, lastElementIndex))
         };
       });
     }
@@ -55,13 +56,7 @@ class CommitsModal extends Component {
     }
     var showMoreButton;
     if (props.showMore) {
-      showMoreButton = (
-        <>
-        <button className={Style.btn_load_more} onClick={props.loadMoreCommits}>
-          \\//
-        </button>
-        </>
-      );
+      showMoreButton = (<ShowMoreButton onClick={props.loadMoreCommits}/>);
     } else {
       showMoreButton = null;
     }

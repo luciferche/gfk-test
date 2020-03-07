@@ -4,6 +4,7 @@ import Style from './App.scss';
 import api from './api/api';
 import Modal from './components/Modal';
 import User from './components/User';
+import ShowMoreButton from './components/ShowMoreButton';
 
 const pageLength = 10;
 
@@ -125,7 +126,9 @@ class App extends React.Component {
           onClose={this.toggleModal}>
           Here's some content for the modal
         </Modal>
-        <UserList users={this.state.users} />
+        <UserList users={this.state.users} setParentCommits={this.setCommitsToShow}
+          onClick={this.onUserClick}
+          toggleModal={this.toggleModal}/>
         {/* <div className={Style.user_list}>
           {
             this.state.users.map(user => {
@@ -146,18 +149,18 @@ class App extends React.Component {
   //called when component is mounted - fetching data from github
   async componentDidMount() {
     // eslint-disable-next-line no-debugger
-    debugger;
+    // debugger;
     console.log('app mounted');
     // Load async data.
     // Update state with new data.
     // Re-render our component.
     this.setState({isLoading: true});
 
-    const users = await api.getUsersByName('luciferche');
+    const users = await api.getUsersByName('luk');
     this.setState(() => ({
       ...this.state,
       isLoading: false,
-      users: users.slice(0, pageLength)
+      users: users
     }));
     console.log('STATE SET AFTER - await in didmount', this.state.users);
   }
@@ -169,23 +172,54 @@ class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: props.users.slice(0, pageLength)
+      users: props.users.slice(0, pageLength),
+      showMore: props.users.length > pageLength
+      // onShowMore: props.onLoadMore
     };
-
+    console.log('this.props', this.props);
+    this.onShowMore = this.onShowMore.bind(this);
   }
 
+  onShowMore() {
+    if (this.state.users.length >= this.props.users.length) {
+      this.setState({
+        showMore: false
+      });
+    } else {
+      var lastElementIndex = pageLength + this.state.users.length;
+      if (lastElementIndex > this.props.users.length) {
+        lastElementIndex = this.props.users.length;
+      }
+      this.setState((prevState, props) => {
+        return {
+          showMore: lastElementIndex < props.users.length,
+          users: prevState.users.concat(props.users.slice(prevState.users.length, lastElementIndex))
+        };
+      });
+    }
+  }
   render() {
+    console.log('USER LIST RENDER - list to show size', this.state.users.length);
+    var showMoreButton;
+    if (this.state.showMore) {
+      showMoreButton = (<ShowMoreButton onClick={this.onShowMore}/>);
+    } else {
+      showMoreButton = null;
+    }
     return (
       <div className={Style.user_list}>
         {
-          this.props.users.map(user => {
+          this.state.users.map(user => {
             return <User user={user}
               key={user.id}
               onClick={this.props.onUserClick}
               toggleModal={this.props.toggleModal}
-              setParentCommits={this.props.setCommitsToShow}
+              setParentCommits={this.props.setParentCommits}
             />;
           })
+        }
+        {
+          showMoreButton
         }
       </div>
     );
