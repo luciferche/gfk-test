@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import React from 'react';
-import Style from './App.scss';
 import api from './api/api';
 import Modal from './components/Modal';
-import User from './components/User';
-import ShowMoreButton from './components/ShowMoreButton';
+
+import HeaderSearch from './components/HeaderSearch';
 
 const pageLength = 10;
 
@@ -16,28 +15,17 @@ class App extends React.Component {
       isLoading: false,
       userToSearch: '',
       isModalOpen: false,
-      commitsToShow: []
+      commitsToShow: [],
+      totalCount: null,
+      lastUserShownIndex: null,
+      fistUserShownIndex: null
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    this.handleSearchClick = this.handleSearchClick.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.setCommitsToShow = this.setCommitsToShow.bind(this);
+    this.getUserCommits = this.getUserCommits.bind(this);
     this.showMoreUsers = this.showMoreUsers.bind(this);
-
-    this.headerTemplate = (
-      <div className={Style.header}>
-        <center /><h1 className={Style.title}>Github users search:</h1><center />
-        <div className={Style.search_wrapper}>
-          <input
-            type="text" placeholder="Username"
-            name="username" onChange={this.handleChange}
-            className={Style.input_search} />
-          <button className={Style.btn_search} onClick={this.handleClick}>
-            SEARCH
-          </button>
-        </div>
-      </div>
-    );
+    this.onUserClick = this.onUserClick.bind(this);
   }
 
   showMoreUsers() {
@@ -52,19 +40,9 @@ class App extends React.Component {
       }
       this.setState({
         showMore: lastElementIndex < this.props.commits.length,
-        commits: this.state.commits.concat(this.props.commits.slice(this.state.commits.length, lastElementIndex))
+        commits: [...this.state.commits, ...this.props.commits.slice(this.state.commits.length, lastElementIndex)]
       });
     }
-  }
-
-  setCommitsToShow(commits, username) {
-    console.log('set from child', commits);
-    this.setState({
-      commitsToShow: commits,
-      usernameToShow: username
-    });
-    console.log('STATE SET AFTER - setCommitsToShow');
-
   }
 
   toggleModal() {
@@ -75,49 +53,56 @@ class App extends React.Component {
 
   }
 
-  handleChange(event) {
-    const username = event.target.value;
-    this.setState(() => ({
-      userToSearch: username
-    }));
-    console.log('STATE SET AFTER - handleChange', this.state);
-
+  handleSearchClick(username) {
+    console.log('esearch by', username);
+    // this.setState({isLoading: true});
+    this.search(username);
   }
 
-  handleClick() {
-    // alert('A name was submitted: ' + this.state.value);
-    this.setState({isLoading: true});
-    this.search();
-  }
-
-  async search() {
-    if (!this.state.userToSearch) {
+  async search(username) {
+    if (!username) {
+      console.error('username provided falsy');
       return;
     }
-    const users = await api.getUsersByName(this.state.userToSearch);
+    const users = await api.getUsersByName(username);
     this.setState(() => ({
       isLoading: true,
       users: users
     }));
-    console.log('STATE SET AFTER - search');
-
+    console.log('STATE SET AFTER - search', this.state);
   }
 
-  // onUserClick() {
+  async getUserCommits(username) {
+    console.log('set from child', username);
 
-  // }
-  // shouldComponentUpdate(nextProps, state) {
-  //   return this.state.users !== state.users;
-  // }
+    const fetchedCommits = await api.getUserData(username);
+    this.setState((prevState) => {
+      return {
+        commitsToShow: fetchedCommits,
+        isModalOpen: !prevState.isModalOpen,
+        usernameToShow: username
+      };
+    });
+
+    console.log('STATE SET AFTER - getUserCommits', this.state);
+
+  }
+  onUserClick(username) {
+    this.getUserCommits(username);
+    // this.togg
+  }
 
   render() {
     console.log('called render APP', this.state.users.length);
     if (!this.state.users.length) {
-      return this.headerTemplate;
+      return (
+        <HeaderSearch onClick={this.handleSearchClick}/>
+
+      );
     }
     return (
       <>
-        {this.headerTemplate}
+        <HeaderSearch onClick={this.handleSearchClick}/>
 
         <Modal
           show={this.state.isModalOpen}
@@ -126,21 +111,10 @@ class App extends React.Component {
           onClose={this.toggleModal}>
           Here's some content for the modal
         </Modal>
-        <UserList users={this.state.users} setParentCommits={this.setCommitsToShow}
-          onClick={this.onUserClick}
+        <UserList users={this.state.users} getUserCommits={this.getUserCommits}
+          pageLength={this.pageLength}
+          onUserClick={this.onUserClick}
           toggleModal={this.toggleModal}/>
-        {/* <div className={Style.user_list}>
-          {
-            this.state.users.map(user => {
-              return <User user={user}
-                key={user.id}
-                onClick={this.onUserClick}
-                toggleModal={this.toggleModal}
-                setParentCommits={this.setCommitsToShow}
-              />;
-            })
-          }
-        </div> */}
 
       </>
     );
@@ -156,75 +130,13 @@ class App extends React.Component {
     // Re-render our component.
     this.setState({isLoading: true});
 
-    const users = await api.getUsersByName('luk');
+    const users = await api.getUsersByName('luciferche');
     this.setState(() => ({
       ...this.state,
       isLoading: false,
       users: users
     }));
-    console.log('STATE SET AFTER - await in didmount', this.state.users);
   }
-}
-
-//helper component for rendering list of users from props
-class UserList extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: props.users.slice(0, pageLength),
-      showMore: props.users.length > pageLength
-      // onShowMore: props.onLoadMore
-    };
-    console.log('this.props', this.props);
-    this.onShowMore = this.onShowMore.bind(this);
-  }
-
-  onShowMore() {
-    if (this.state.users.length >= this.props.users.length) {
-      this.setState({
-        showMore: false
-      });
-    } else {
-      var lastElementIndex = pageLength + this.state.users.length;
-      if (lastElementIndex > this.props.users.length) {
-        lastElementIndex = this.props.users.length;
-      }
-      this.setState((prevState, props) => {
-        return {
-          showMore: lastElementIndex < props.users.length,
-          users: prevState.users.concat(props.users.slice(prevState.users.length, lastElementIndex))
-        };
-      });
-    }
-  }
-  render() {
-    console.log('USER LIST RENDER - list to show size', this.state.users.length);
-    var showMoreButton;
-    if (this.state.showMore) {
-      showMoreButton = (<ShowMoreButton onClick={this.onShowMore}/>);
-    } else {
-      showMoreButton = null;
-    }
-    return (
-      <div className={Style.user_list}>
-        {
-          this.state.users.map(user => {
-            return <User user={user}
-              key={user.id}
-              onClick={this.props.onUserClick}
-              toggleModal={this.props.toggleModal}
-              setParentCommits={this.props.setParentCommits}
-            />;
-          })
-        }
-        {
-          showMoreButton
-        }
-      </div>
-    );
-  }
-
 }
 
 export default App;

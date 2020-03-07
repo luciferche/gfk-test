@@ -19,7 +19,18 @@ class CommitsModal extends Component {
     console.log('commits modal constructor');
 
     console.log('STATE ON END OF CREATION', this.state);
+    //instead of diMount annd onUpdate
+    // useEffect(() => {
+    //   function handleStatusChange(status) {
+    //     setIsOnline(status.isOnline);
+    //   }
 
+    //   ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    //   // Specify how to clean up after this effect:
+    //   return function cleanup() {
+    //     ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    //   };
+    // });
   }
 
   loadMoreCommits() {
@@ -35,7 +46,7 @@ class CommitsModal extends Component {
       this.setState((prevState, props) => {
         return {
           showMore: lastElementIndex < props.commits.length,
-          commits: prevState.commits.concat(props.commits.slice(prevState.commits.length, lastElementIndex))
+          commits: [...prevState.commits, ...props.commits.slice(prevState.commits.length, lastElementIndex)]
         };
       });
     }

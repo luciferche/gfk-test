@@ -99,8 +99,11 @@ const getUserData = async (userLogin) => {
   // return [];
 
 };
-const fetchUsers = async (name) => {
-  const query = graph.searchUsersQuery(name);
+const fetchUsers = async (name, from) => {
+  console.log('FROM ', from);
+  const fromCursor = from || null;
+  console.log('FROM CURSOR', fromCursor);
+  const query = graph.searchUsersQuery(name, fromCursor);
   console.log('QUERY ', query);
   const Response = await wrappedApi.post('',
     {
@@ -125,6 +128,7 @@ const fetchUsers = async (name) => {
     return {
       avatarUrl: node.node.avatarUrl,
       username: node.node.login,
+      name: node.node.name,
       id: node.node.id,
       updatedAt: localDate.toLocaleString()
     };

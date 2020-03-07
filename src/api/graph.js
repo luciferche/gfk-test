@@ -7,9 +7,11 @@
  */
 const searchUsersQuery = () => {
   // console.log('offsetnumber', offsetNumber);
-  const query = `query GetUserByName($name: String!) {
-    search(query: $name, type: USER, first: 100) {
+  const query = `query GetUserByName($name: String!, $fromCursor: String) {
+    search(query: $name, type: USER, first: 100, from: $fromCursor) {
+      userCount
       edges {
+        cursor
         node {
           __typename
             ... on User {
