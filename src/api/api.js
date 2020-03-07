@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import axios from 'axios';
 import graph from './graph';
@@ -6,7 +5,6 @@ import graph from './graph';
 // const GITHUB_URL = 'https://api.github.com/search'; //OLD API
 const githubUrl = 'https://api.github.com/graphql'; //new graphql api
 
-// const githubToken = 'c10fa511a578e764a20ad3722ddd2ba273405ed8';
 const githubToken = '565c75dbd633ba7d8980604d1d55ed1d6105996d';
 
 // The Authorization in the header of the request
@@ -99,29 +97,46 @@ const getUserData = async (userLogin) => {
   // return [];
 
 };
+
+/**
+ *  Gets users from Github by username and offset cursor
+ * @param {username to search by} name
+ * @param {from cursor of the last user to start searching from} from
+ * @returns { object containing users, cursor to the last user and flag if there are more users for that query}
+ * {
+ *  users: Array,
+ *  cursorLast: String,
+ *  hasMore: boolean
+ * }
+ */
 const fetchUsers = async (name, from) => {
-  console.log('FROM ', from);
   const fromCursor = from || null;
+  const result = {
+    users: [],
+    cursorLast: null,
+    hasMore: false
+  };
   console.log('FROM CURSOR', fromCursor);
   const query = graph.searchUsersQuery(name, fromCursor);
-  console.log('QUERY ', query);
+
   const Response = await wrappedApi.post('',
     {
       query: query,
-      variables: {name}
+      variables: {name, fromCursor}
     },
     {headers: authorization}
   );
   const JSON = await Response.data;
-  console.log('users ', JSON);
   if (JSON.errors) {
     console.error('error with request ', JSON.errors);
-    return [];
+    return result;
   }
   if (!JSON.data.search.edges.length) {
     console.error('nothing found');
-    return [];
+    return result;
   }
+  const lastUser = JSON.data.search.edges[JSON.data.search.edges.length - 1];
+  console.log('lastUser', lastUser);
   const parsedResponse = JSON.data.search.edges.map(node => {
     var localDate = new Date(node.node.updatedAt);
 
@@ -130,12 +145,17 @@ const fetchUsers = async (name, from) => {
       username: node.node.login,
       name: node.node.name,
       id: node.node.id,
-      updatedAt: localDate.toLocaleString()
+      updatedAt: localDate.toLocaleString(),
+      cursor: node.cursor
     };
   });
-  console.log('response from GRAPHQL', parsedResponse);
-
-  return parsedResponse;
+  console.log('LAST ELEMENT FROM GRAPHQL', parsedResponse[parsedResponse.length - 1]);
+  result.users = parsedResponse;
+  if (parsedResponse.length < JSON.data.search.userCount) {
+    result.hasMore = true;
+    result.cursorLast = parsedResponse[parsedResponse.length - 1].cursor;
+  }
+  return result;
 };
 
 // export default axios.create({

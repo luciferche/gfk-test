@@ -6,9 +6,8 @@
  * @param {name to be searched against username} name
  */
 const searchUsersQuery = () => {
-  // console.log('offsetnumber', offsetNumber);
   const query = `query GetUserByName($name: String!, $fromCursor: String) {
-    search(query: $name, type: USER, first: 100, from: $fromCursor) {
+    search(query: $name, type: USER, first: 10, after: $fromCursor) {
       userCount
       edges {
         cursor
@@ -26,7 +25,6 @@ const searchUsersQuery = () => {
       }
     }
   }`;
-  // console.log('QUERY', query);
   return query;
 };
 

@@ -49,6 +49,7 @@ class HeaderSearch extends React.Component {
             name="username"
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
+            onFocus="this.value = this.value;" //hack for setting cursor to the end of input
             value={this.state.username}
             className={Style.input_search} />
           <button className={Style.btn_search} onClick={() => this.props.onClick(this.state.value)}>

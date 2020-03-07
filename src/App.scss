@@ -82,3 +82,11 @@ body {
   margin: 0px;
   width: 30px;
 }
+.empty_list {
+  
+  border-top: solid 1px $dividerColour;
+  width: 100%;
+}
+.empty_list_text {
+  color: $searchButton;
+}
