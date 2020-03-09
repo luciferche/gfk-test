@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import React from 'react';
-import Modal from './components/Modal';
-import UserList from './components/UserList';
-import HeaderSearch from './components/HeaderSearch';
+import Modal from './components/modal/Modal';
+import UserList from './components/userList/UserList';
+import HeaderSearch from './components/headerSearch/HeaderSearch';
 import './App.scss';
 
 class App extends React.Component {

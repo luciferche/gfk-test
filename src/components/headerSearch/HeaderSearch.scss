@@ -1,10 +1,10 @@
 
-@import '../colours';
+@import '../../stylesheets/colours';
 
 
 header {
   box-shadow: 0 3px 5px -1px $shadowColor;
-  padding: 12px 24px;
+  padding: 12px 24px !important;
   position: relative;
   h1 {
     display: inline-block;

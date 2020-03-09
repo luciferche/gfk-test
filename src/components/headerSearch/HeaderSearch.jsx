@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 
 import React from 'react';
-import Style from '../stylesheets/components/HeaderSearch.scss';
+import Style from './HeaderSearch.scss';
+// import Style from '../../stylesheets/Main.scss';
 
 /**
  * Helper class for holding view with input box for username

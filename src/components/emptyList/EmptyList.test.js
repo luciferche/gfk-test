@@ -23,9 +23,10 @@ it('Shows Empty list without title passed', () => {
   act(() => {
     render(<EmptyList />, container);
   });
+
   expect(container
-    .querySelector('h3').innerHTML)
-    .toEqual('Nothing to show here');
+    .querySelector('p').textContent)
+    .toBe('Nothing to show here');
 });
 
 it('Shows Empty container with title from props', () => {
@@ -33,6 +34,6 @@ it('Shows Empty container with title from props', () => {
     render(<EmptyList title="Luka"/>, container);
   });
   expect(container
-    .querySelector('h3').innerHTML)
-    .toEqual('Luka');
+    .querySelector('p').textContent)
+    .toBe('Luka');
 });

@@ -1,11 +1,11 @@
 /* eslint-disable no-ternary */
 /* eslint-disable no-console */
 import React, {Component} from 'react';
-import Commit from './Commit';
-import Style from '../stylesheets/components/CommitModal.scss';
-import ShowMoreButton from './ShowMoreButton';
-import api from '../api/api';
-import EmptyList from './EmptyList';
+import Commit from '../commit/Commit';
+import Style from './CommitsModal.scss';
+import ShowMoreButton from '../showMoreButton/ShowMoreButton';
+import api from '../../api/api';
+import EmptyList from '../emptyList/EmptyList';
 
 const pageLength = 50;
 

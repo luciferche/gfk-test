@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import CommitsModal from './CommitsModal';
+import CommitsModal from '../commitsModal/CommitsModal';
 
 class Modal extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 // import Style from '../App.scss';
-import Style from '../stylesheets/components/Commit.scss';
+import Style from './Commit.scss';
 
 const Commit = (props) => {
   if (!props.commit) {

@@ -4,8 +4,8 @@ import UserList from './UserList';
 import Enzyme, {shallow, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import ShowMoreButton from './ShowMoreButton';
-import EmptyList from './EmptyList';
+import ShowMoreButton from '../showMoreButton/ShowMoreButton';
+import EmptyList from '../emptyList/EmptyList';
 
 jest.mock('../api/api');
 

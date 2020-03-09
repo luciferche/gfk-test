@@ -1,5 +1,5 @@
-import Style from '../stylesheets/components/Main.scss';
 import React from 'react';
+import Style from '../../stylesheets/Main.scss';
 
 const ShowMoreButton = (props) => {
   return (

@@ -1,8 +1,8 @@
-import React from 'react';
-import {render, unmountComponentAtNode} from 'react-dom';
-import {act} from 'react-dom/test-utils';
+import React from './node_modules/react';
+import {render, unmountComponentAtNode} from './node_modules/react-dom';
+import {act} from './node_modules/react-dom/test-utils';
 
-import ShowMoreButton from './ShowMoreButton';
+import ShowMoreButton from './ShowMoreButton/ShowMoreButton';
 
 let container = null;
 // const sampleCommit = {

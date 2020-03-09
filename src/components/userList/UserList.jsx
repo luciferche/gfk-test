@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
 import React from 'react';
-import ShowMoreButton from './ShowMoreButton';
-import Style from '../stylesheets/components/Main.scss';
-// import Style from '../App.scss';
+import Style from '../../stylesheets/Main.scss';
+import ShowMoreButton from '../showMoreButton/ShowMoreButton';
 
-import User from './User';
-import api from '../api/api';
-import EmptyList from './EmptyList';
+import User from '../user/User';
+import api from '../../api/api';
+import EmptyList from '../emptyList/EmptyList';
 
 const TAG = '@@@@@ User List @@@@@  ';
 
@@ -18,7 +17,8 @@ class UserList extends React.Component {
     this.state = {
       users: [],
       showLoadMore: false,
-      cursorLast: null
+      cursorLast: null,
+      isLoading: false
     };
   }
 
@@ -60,35 +60,57 @@ class UserList extends React.Component {
   }
 
   async fetchUsers(cursorLast) {
+
+    this.setState(() => {
+      return {isLoading: true};
+    });
     // console.log('STATE IN FETCH USERS', this.state);
-    const result = await api.getUsersByName(this.props.username, cursorLast);
-    this.setState((prevState) => ({
-      users: [...prevState.users, ...result.users],
-      showLoadMore: result.hasMore,
-      cursorLast: result.cursorLast
-    }));
+    try {
+      const result = await api.getUsersByName(this.props.username, cursorLast);
+      this.setState((prevState) => ({
+        users: [...prevState.users, ...result.users],
+        showLoadMore: result.hasMore,
+        cursorLast: result.cursorLast,
+        isLoading: false
+      }));
+    } catch (err) {
+      console.error('error loading users', err);
+      this.setState(() => {
+        return {
+          isLoading:true
+        };
+      });
+    }
+
   }
 
   render() {
-    var showMoreButton;
+    console.log('isloading ----- , ', this.state.isLoading);
+    //if it is loading, show it to user
+    if (this.state.isLoading) {
+      return (
+        <EmptyList title="Loading...."/>
+      );
+    }
     //if username isn't passed to the component render empty list
     if (!this.props.username) {
       return (
         <EmptyList title="No username entered"/>
       );
     }
-    if (this.state.users.length === 0) {
+    if (this.state.users && this.state.users.length === 0) {
       return (
         <EmptyList title="No users found"/>
       );
     }
+    var showMoreButton;
     if (this.state.showLoadMore) {
       showMoreButton = (<ShowMoreButton onClick={async () => this.onShowMore()}/>);
     } else {
       showMoreButton = null;
     }
     return (
-      <div className={Style.user_list}>
+      <div className={Style.user_list} data-testid="userList">
         {
           this.state.users.map(user => {
             return <User {...user }
@@ -115,7 +137,6 @@ class UserList extends React.Component {
     // Load async data.
     // Update state with new data.
     // Re-render our component.
-    // this.setState({isLoading: true});
     if (!this.props.username) {
       return;
     }
