@@ -18,7 +18,7 @@ const Commit = (props) => {
         </span>
         <span className={Style.commit_message} data-testid='message'>{props.commit.message}</span> */}
         <span className={Style.commit_repo} data-testid='repository'>{props.commit.repository}</span>
-        <span className={Style.commit_count} data-testid='commitCount'># commits: {props.commit.commitCount}</span>
+        <span className={Style.commit_count} data-testid='commitCount'>commits: #  {props.commit.commitCount}</span>
       </div>
     </>
   );

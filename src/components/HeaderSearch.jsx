@@ -24,9 +24,11 @@ class HeaderSearch extends React.Component {
 
   handleKeyDown(e) {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      //enter clicked, do the search
-      this.props.onClick(this.state.value);
+      if (this.state.value.length > 2) { // don't search if there are no more than 2 characters entered
+        e.preventDefault();
+        //enter clicked, do the search
+        this.props.onClick(this.state.value);
+      }
     }
   }
 

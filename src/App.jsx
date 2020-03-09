@@ -1,27 +1,21 @@
 /* eslint-disable no-console */
 import React from 'react';
-// import api from './api/api';
 import Modal from './components/Modal';
 import UserList from './components/UserList';
 import HeaderSearch from './components/HeaderSearch';
-// import Style from './App.scss';
 import './App.scss';
 
-const TAG = '!!!!! APP !!!!!  ';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      // userToSearch: 'luciferche',
       isModalOpen: false
     };
 
-    // this.handleSearchClick = this.handleSearchClick.bind(this);
     this.search = this.search.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    // this.getUserCommits = this.getUserCommits.bind(this);
-    this.onUserClick = this.onUserClick.bind(this);
+    this.getUserCommits = this.getUserCommits.bind(this);
   }
 
   toggleModal() {
@@ -30,15 +24,10 @@ class App extends React.Component {
     });
   }
 
-  // handleSearchClick(username) {
-  //   // console.log('esearch by', username);
-  //   // this.setState({isLoading: true});
-  //   this.search(username);
-  // }
-
   search(username) {
     if (!username) {
-      console.error(TAG + 'username provided falsy');
+      console.error(
+        'username provided falsy');
       return;
     }
     this.setState(() => {
@@ -48,10 +37,9 @@ class App extends React.Component {
     });
   }
 
+  /* to-do check & remove async*/
   async getUserCommits(username) {
 
-    // const fetchedCommits = await api.getUserData(username);
-    // console.log(TAG + ' fetchedCommits ', fetchedCommits);
     this.setState((prevState) => {
       return {
         // commitsToShow: fetchedCommits,
@@ -61,13 +49,8 @@ class App extends React.Component {
     });
 
   }
-  onUserClick(username) {
-    this.getUserCommits(username);
-    // this.toggleModal();
-  }
 
   render() {
-    console.log(TAG, 'called render APP', this.state.username);
     return (
       <>
         <HeaderSearch onClick={this.search}/>
@@ -80,7 +63,7 @@ class App extends React.Component {
         </Modal>
         <UserList
           username={this.state.username}
-          onUserClick={this.onUserClick}
+          onUserClick={this.getUserCommits}
           toggleModal={this.toggleModal}/>
 
       </>

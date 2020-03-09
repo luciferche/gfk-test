@@ -8,7 +8,7 @@ import Style from '../stylesheets/components/User.scss';
 const User = (props) => {
   return (
     <>
-    <div className={Style.user} onClick={() => props.onUserClick(props.username)}>
+    <div className={Style.user} onClick={() => props.onUserClick(props.username)} data-testid='userItem'>
       <span className={Style.avatar_wrapper}>
         <img className={Style.avatar} src={props.avatarUrl} />
       </span>
