@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import React from 'react';
 import ShowMoreButton from './ShowMoreButton';
-import Style from '../App.scss';
+import Style from '../stylesheets/components/Main.scss';
+// import Style from '../App.scss';
+
 import User from './User';
 import api from '../api/api';
 import EmptyList from './EmptyList';

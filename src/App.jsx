@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 import React from 'react';
-import api from './api/api';
+// import api from './api/api';
 import Modal from './components/Modal';
 import UserList from './components/UserList';
 import HeaderSearch from './components/HeaderSearch';
+// import Style from './App.scss';
+import './App.scss';
 
 const TAG = '!!!!! APP !!!!!  ';
 class App extends React.Component {
@@ -18,7 +20,7 @@ class App extends React.Component {
     // this.handleSearchClick = this.handleSearchClick.bind(this);
     this.search = this.search.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.getUserCommits = this.getUserCommits.bind(this);
+    // this.getUserCommits = this.getUserCommits.bind(this);
     this.onUserClick = this.onUserClick.bind(this);
   }
 
@@ -47,12 +49,12 @@ class App extends React.Component {
   }
 
   async getUserCommits(username) {
-    // console.log(TAG + 'set from child', username);
 
-    const fetchedCommits = await api.getUserData(username);
+    // const fetchedCommits = await api.getUserData(username);
+    // console.log(TAG + ' fetchedCommits ', fetchedCommits);
     this.setState((prevState) => {
       return {
-        commitsToShow: fetchedCommits,
+        // commitsToShow: fetchedCommits,
         isModalOpen: !prevState.isModalOpen,
         usernameToShow: username
       };
@@ -61,7 +63,7 @@ class App extends React.Component {
   }
   onUserClick(username) {
     this.getUserCommits(username);
-    // this.toggle
+    // this.toggleModal();
   }
 
   render() {
@@ -76,7 +78,7 @@ class App extends React.Component {
           onClose={this.toggleModal}>
           Here's some content for the modal
         </Modal>
-        <UserList getUserCommits={this.getUserCommits}
+        <UserList
           username={this.state.username}
           onUserClick={this.onUserClick}
           toggleModal={this.toggleModal}/>

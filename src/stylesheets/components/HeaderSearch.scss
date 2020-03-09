@@ -1,0 +1,40 @@
+
+@import '../colours';
+
+
+header {
+  box-shadow: 0 3px 5px -1px $shadowColor;
+  padding: 12px 24px;
+  position: relative;
+  h1 {
+    display: inline-block;
+    font-size: 18px;
+    margin: 0;
+    padding: 10px 0;
+    vertical-align: middle;
+    & + div {
+      border: 1px solid $mainColor;
+      float: right;
+      margin-left: 24px;
+      input {
+        border: 0;
+        outline: 0;
+        padding: 9px 12px 11px;
+        width: 240px;
+      }
+      button {
+        border: 0;
+        border-radius: 0;
+        font-family: 'Roboto', sans-serif;
+        font-size: 13px;
+        outline: 0;
+        padding: 10px;
+      }
+      input,
+      button {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@import '../colours';
+
+
+.commit {
+  align-items: center;
+  background-color: $lightGray;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  width: 100%;
+  &:hover {
+    box-shadow: 4px 0px 0px $mainColor inset;
+  }
+  .commit_date,
+  .commit_icon,
+  .commit_message,
+  .commit_repo,
+  .commit_count {
+    padding: 12px 16px;
+    width: 20%;
+  }
+  .commit_repo {
+    min-width: 240px;
+  }
+  .commit_date {
+    min-width: 200px;
+  }
+  .commit_count {
+    min-width: 140px;
+    text-align: right;
+  }
+  .commit_icon {
+    width: 75px;
+  }
+  .commit_item {
+    height: 20px;
+    width: 100%;
+  }
+}

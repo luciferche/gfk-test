@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 
 import React from 'react';
-import Style from '../App.scss';
+import Style from '../stylesheets/components/HeaderSearch.scss';
+
 /**
  * Helper class for holding view with input box for username
  * and a button to search
@@ -39,12 +40,13 @@ class HeaderSearch extends React.Component {
 
   render() {
     return (
-      <div className={Style.header}>
-        <center /><h1 className={Style.title}>Github users search:</h1><center />
+      <header className={Style.header}>
+        <h1 className={Style.title}>Github users search:</h1>
         <div className={Style.search_wrapper}>
           <input
-            type="text" placeholder="Username"
+            type="text"
             name="username"
+            placeholder="Search Github by Username"
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             onFocus={() => {
@@ -53,10 +55,10 @@ class HeaderSearch extends React.Component {
             value={this.state.username}
             className={Style.input_search} />
           <button className={Style.btn_search} onClick={() => this.props.onClick(this.state.value)}>
-            SEARCH
+            Search
           </button>
         </div>
-      </div>
+      </header>
     );
   }
 }

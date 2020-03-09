@@ -1,5 +1,6 @@
 import React from 'react';
-import Style from '../stylesheets/Util.scss';
+// import Style from '../stylesheets/components/Main.scss';
+import Style from '../App.scss';
 /**
  * Helper function for rendering container with a message for an empty list
  * probably should rename it...
@@ -8,7 +9,7 @@ import Style from '../stylesheets/Util.scss';
 const EmptyList = (props) => {
   return (
     <div className={Style.empty_list}>
-      <h3 className={Style.empty_list_text}>{props.title}</h3>
+      <p>{props.title || 'Nothing to show here'}</p>
     </div>
   );
 };

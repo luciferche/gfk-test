@@ -2,12 +2,12 @@
 /* eslint-disable no-console */
 import React, {Component} from 'react';
 import Commit from './Commit';
-import Style from '../stylesheets/Commit.scss';
+import Style from '../stylesheets/components/CommitModal.scss';
 import ShowMoreButton from './ShowMoreButton';
 import api from '../api/api';
 import EmptyList from './EmptyList';
 
-// const pageLength = 20;
+const pageLength = 50;
 
 class CommitsModal extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class CommitsModal extends Component {
       showMore: false,
       commits: []
     };
-    // this.loadMoreCommits = this.loadMoreCommits.bind(this);
+    this.loadMoreCommits = this.loadMoreCommits.bind(this);
     console.log('commits modal constructor');
 
     console.log('STATE ON END OF CREATION', this.state);
@@ -26,38 +26,44 @@ class CommitsModal extends Component {
 
   }
 
+  getLastElementIndex(shownCommits, allCommits) {
+    var lastElementIndex = pageLength + shownCommits.length;
+    if (lastElementIndex > allCommits.length) {
+      lastElementIndex = allCommits.length;
+    }
+    return lastElementIndex;
+  }
   async getUserCommits() {
-    // console.log(TAG + 'set from child', username);
-    console.log('CommitsModal GET USER COMMITS', this.props);
+
     const commits = await api.getUserData(this.props.username);
+
     this.setState((prevState) => {
+      var lastElementIndex = this.getLastElementIndex(prevState.commits, commits);
       return {
-        commits: commits,
+        allFetchedCommits: commits,
+        showMore: lastElementIndex < commits.length,
+        commits: [...prevState.commits, ...commits.slice(prevState.commits.length, lastElementIndex)],
         isModalOpen: !prevState.isModalOpen
       };
     });
 
   }
-  /*
   loadMoreCommits() {
-    if (this.state.commits.length >= this.props.commits.length) {
+    if (this.state.commits.length >= this.state.allFetchedCommits.length) {
       this.setState({
         showMore: false
       });
     } else {
-      var lastElementIndex = pageLength + this.state.commits.length;
-      if (lastElementIndex > this.props.commits.length) {
-        lastElementIndex = this.props.commits.length;
-      }
-      this.setState((prevState, props) => {
+      var lastElementIndex = this.getLastElementIndex(this.state.commits, this.state.allFetchedCommits);
+      this.setState((prevState) => {
         return {
-          showMore: lastElementIndex < props.commits.length,
-          commits: [...prevState.commits, ...props.commits.slice(prevState.commits.length, lastElementIndex)]
+          showMore: lastElementIndex < prevState.allFetchedCommits.length,
+          commits: prevState.commits.concat(prevState.allFetchedCommits.slice(prevState.commits.length, lastElementIndex))
         };
       });
     }
   }
-  */
+
   async componentDidMount() {
     this.getUserCommits();
   }
@@ -104,21 +110,21 @@ class CommitsModal extends Component {
   }
   render() {
     document.body.style.overflow = 'hidden';
-    if (!this.props.show) {
+    if (!this.state.allFetchedCommits) {
       return null;
     }
     return (
       <>
       <div className={Style.backdrop_style}>
         <div className={Style.modal_style} >
-          <div className={Style.modal_close_wrapper}>
+          <div className={Style.modal_header}>
+            <h4 className={Style.modal_title}>
+            Latest activity for: {this.props.username}
+            </h4>
             <button onClick={this.props.onClose} className={Style.modal_close}>
-              X
+              x
             </button>
           </div>
-          <h4 className={Style.modal_title}>
-            Latest activity for: {this.props.username}
-          </h4>
           {/* <div className={Style.modal_list} /> */}
           <Activity
             commits={this.state.commits}
@@ -132,6 +138,9 @@ class CommitsModal extends Component {
 }
 
 const Activity = (props) => {
+  if (!props.commits) {
+    return (<></>);
+  }
   if (!props.commits.length) {
     return (
       <EmptyList title="No activities found" />

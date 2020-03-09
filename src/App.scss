@@ -1,85 +1,157 @@
 @import 'stylesheets/colours';
 
-body {
+// start css reset
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  border: 0;
   font-family: 'Roboto', sans-serif;
-  // margin: 0;
-  // padding: 0;
-}
-.title {
-  color: $mainFont;
-  // font-size: 2em;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
 }
 
-.header {
-  height: 120px;
-  
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
-.input_search {
-  border-radius: 4px;
-  height: 30px;
-
-  width: 200px;
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-.btn_search {
-  background-color: $searchBackground;
-  border-radius: 4px;
-  color: $mainFont;
-  cursor: pointer;
-  float: right;
-  height: 30px;
-  margin-right: 50px;
-  width: 100px;
+// end css reset
+
+* {
+  box-sizing: border-box;
+  color: $mainTextColor;
+}
+
+html,
+body,
+[id^=root] {
+  height: 100%;
 }
 
 .user_list {
-  border-top: solid 1px $dividerColour;
+  height: calc(100% - 62px);
+  overflow: auto;
+  padding: 24px;
   width: 100%;
-  
+  button {
+    display: block;
+    margin: 24px auto;
+    padding: 12px 24px;
+  }
 }
-.user {
-  align-items: center;
-  background-color: $userCardBackground;
-  box-shadow: 1px 1px 5px 2px $shadowColour;
-
-  // border: solid 1px $dividerColour;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  height: 60px;
-  // margin-bottom: 3px;
-  margin-top: 5px;
-  // padding: 10px;
+.empty_list {
+  padding: 24px;
   width: 100%;
-  
-
-}
-.user:hover {
-  outline-width: 0;
-}
-// .user_info {
-// }
-.user_username {
-  padding-left: 20px;
-  width: 20%;
-}
-.user_name {
-  padding-left: 20px;
-  width: 30%;
-}
-.user_location {
-  padding-left: 10px;
-  width: 100px;
-}
-.user_updated_at {
-  font-size: small;
-}
-.avatar_wrapper {
-  text-align: center;
-  width: 100px;
-}
-.avatar {
-  height: 30px;
-  margin: 0px;
-  width: 30px;
 }

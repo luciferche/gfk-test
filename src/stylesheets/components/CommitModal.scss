@@ -1,0 +1,45 @@
+@import '../colours';
+
+
+.commit_list {
+  width: 100%;
+}
+
+
+.backdrop_style {
+  background-color: rgba(0, 0, 0, .4);
+  bottom: 0;
+  box-shadow: 0 3px 5px -1px $shadowColor;
+  left: 0;
+  padding: 50px;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.modal_style {
+  background-color: $white;
+  border-radius: 5px;
+  margin: 0px auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.modal_content {
+  margin: 20px 0;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.modal_header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.no_activity_label {
+  display: block;
+  font-size: 14px;
+  margin: 24px 0 8px;
+}

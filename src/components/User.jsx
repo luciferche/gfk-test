@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 
 import React from 'react';
-import Style from '../App.scss';
+// import Style from '../stylesheets/components/Main.scss';
+// import Style from '../App.scss';
+import Style from '../stylesheets/components/User.scss';
 
 const User = (props) => {
   return (

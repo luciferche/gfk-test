@@ -1,0 +1,52 @@
+@import '../colours';
+
+
+.user {
+  align-items: center;
+  background-color: $lightGray;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+
+  font-size: 14px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  width: 100%;
+  &:hover {
+    box-shadow: 4px 0px 0px $mainColor inset;
+  }
+}
+
+.avatar_wrapper,
+.user_username,
+.user_name,
+.user_location,
+.user_updated_at {
+  padding: 0 24px;
+  width: 20%;
+}
+
+.user_username {
+  font-weight: bold;
+}
+
+.user_updated_at {
+  min-width: 200px;
+  text-align: right;
+}
+
+.avatar_wrapper {
+  padding: 0 24px;
+  text-align: left;
+  width: 96px;
+}
+
+.avatar {
+  border: 2px solid $mainColor;
+  border-radius: 100%;
+  height: 48px;
+  margin: 7px 0 4px;
+  padding: 0;
+  width: 48px;
+}

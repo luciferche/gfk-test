@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import graph from './graph';
+import {searchUsersQuery, userActivityQuery} from './graph';
 
 // const GITHUB_URL = 'https://api.github.com/search'; //OLD API
 const githubUrl = 'https://api.github.com/graphql'; //new graphql api
@@ -10,9 +10,9 @@ const githubToken = '565c75dbd633ba7d8980604d1d55ed1d6105996d';
 // The Authorization in the header of the request
 const authorization = {Authorization: 'bearer ' + githubToken};
 
-const wrappedApi = axios.create({
-  baseURL: githubUrl
-});
+// const wrappedApi = axios.create({
+//   baseURL: githubUrl
+// });
 
 const sortByDateDesc = (a, b) => {
   const dateA = new Date(a.occurredAt);
@@ -42,17 +42,12 @@ const parseResponse = (data) => {
     .contributionsCollection
     .commitContributionsByRepository
     .flatMap(commitsByRepo => {
-      let repoName = '';
-      if (commitsByRepo.repository) {
-        repoName = commitsByRepo.repository.nameWithOwner;
-      }
-      const flatted = commitsByRepo.contributions.nodes.map(node => {
+      const flatted = commitsByRepo.contributions.edges.flatMap(node => {
         return {
-          repository: repoName,
-          ...node
+          ...node.node,
+          repository: node.node.repository.nameWithOwner
         };
       });
-      // console.log('contributionflatted', flatted);
       return flatted;
     })
     .map((commit, index) => {
@@ -78,11 +73,13 @@ const getUserData = async (userLogin) => {
     return [];
 
   }
-  const query = graph.getOneUserQuery(userLogin);
+  // const query = graph.getOneUserQuery(userLogin);
+  console.log('@@@@@@ GET USER DATA CALLED');
   // try {
-  const response = await wrappedApi.post('',
+  // const response = await wrappedApi.post('',
+  const response = await axios.post(githubUrl,
     {
-      query: query,
+      query: userActivityQuery,
       variables: {userLogin}
     },
     {headers: authorization}
@@ -117,11 +114,11 @@ const fetchUsers = async (name, from) => {
     hasMore: false
   };
   console.log('FROM CURSOR', fromCursor);
-  const query = graph.searchUsersQuery(name, fromCursor);
+  // const query = graph.searchUsersQuery(name, fromCursor);
 
-  const Response = await wrappedApi.post('',
+  const Response = await axios.post(githubUrl,
     {
-      query: query,
+      query: searchUsersQuery,
       variables: {name, fromCursor}
     },
     {headers: authorization}
