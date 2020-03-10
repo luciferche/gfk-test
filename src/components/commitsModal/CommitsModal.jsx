@@ -1,5 +1,3 @@
-/* eslint-disable no-ternary */
-/* eslint-disable no-console */
 import React, {Component} from 'react';
 import Commit from '../commit/Commit';
 import Style from './CommitsModal.scss';
@@ -9,6 +7,13 @@ import EmptyList from '../emptyList/EmptyList';
 
 const pageLength = 50;
 
+/**
+ * Componet CommitsModal holds actual view and commits list for a user
+ * accepts as props a username
+ * and fetches commits for that user
+ * Commits returned are limited to 50 per one load to the state
+ * after every press onn shor more button, additional 50 are added to the list
+ */
 class CommitsModal extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +25,7 @@ class CommitsModal extends Component {
     this.loadMoreCommits = this.loadMoreCommits.bind(this);
   }
 
+  /* helper function for returning last element for slicing full array ) */
   getLastElementIndex(shownCommits, allCommits) {
     var lastElementIndex = pageLength + shownCommits.length;
     if (lastElementIndex > allCommits.length) {
@@ -28,6 +34,10 @@ class CommitsModal extends Component {
     return lastElementIndex;
   }
 
+  /**
+   * Async function for calling api and loading all commits for username
+   *
+   */
   async getUserCommits() {
 
     try {
@@ -44,14 +54,17 @@ class CommitsModal extends Component {
         };
       });
     } catch (err) {
-      //display error to the user
-      console.log('errrrrrrr', err);
+      //to-do display error to the user
       this.setState(() => ({
         isLoading: false
       }));
     }
 
   }
+
+  /**
+   * Functionn for copying elements from full list to the list for rendering in DOM
+   */
   loadMoreCommits() {
     if (this.state.commits.length >= this.state.allFetchedCommits.length) {
       this.setState({
@@ -68,18 +81,19 @@ class CommitsModal extends Component {
     }
   }
 
+  /**
+   * Once component mounts I try fetching all commits by user
+   * */
   async componentDidMount() {
     this.getUserCommits();
   }
 
+  //hack to returnn overlay to the document body once modal is closed
   componentWillUnmount() {
     document.body.style.overflow = 'unset';
   }
   render() {
-    document.body.style.overflow = 'hidden';
-    // if (!this.state.allFetchedCommits) {
-    //   return null;
-    // }
+    document.body.style.overflow = 'hidden'; //hack to remove overlay from document body
     return (
       <>
       <div className={Style.backdrop_style}>
@@ -104,6 +118,11 @@ class CommitsModal extends Component {
   }
 }
 
+/**
+ * Helper functional component for presenting empty list
+ * or list of commits along with buttons, depending on props
+ * @param {props from the parent} props
+ */
 const Activity = (props) => {
   if (props.isLoading) {
     return <EmptyList title="Loading..."/>;
@@ -125,7 +144,6 @@ const Activity = (props) => {
 
         {
           props.commits.map(commit => {
-            // console.log('mapped user', commit);
             return <Commit commit={commit} key={commit.id}/>;
           })
         }</div>
@@ -134,8 +152,6 @@ const Activity = (props) => {
       }
     </React.Fragment>
   );
-
-  //return list of items if there are some
 
 };
 export default CommitsModal;

@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import ShowMoreButton from '../showMoreButton/ShowMoreButton';
 import EmptyList from '../emptyList/EmptyList';
 
-jest.mock('../api/api');
+jest.mock('../../api/api');
 
 Enzyme.configure({adapter: new Adapter()});
 
@@ -22,7 +22,7 @@ describe('User List component', () => {
     const wrapper = await mount(<UserList username='' />);
     console.log('PPPPP - ', wrapper.find(EmptyList));
     expect(wrapper.find(EmptyList).length).toBe(1);
-
+    wrapper.unmount();
   });
 
   test('When has shortUsername return many users with paging', async () => {
@@ -44,5 +44,6 @@ describe('User List component', () => {
     expect(wrapper.state('cursorLast')).toBe(3);
     expect(wrapper.find(ShowMoreButton).length).toBe(0);
 
+    wrapper.unmount();
   });
 });

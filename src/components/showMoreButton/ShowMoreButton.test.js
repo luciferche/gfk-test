@@ -1,16 +1,10 @@
-import React from './node_modules/react';
-import {render, unmountComponentAtNode} from './node_modules/react-dom';
-import {act} from './node_modules/react-dom/test-utils';
+import React from 'react';
+import {render, unmountComponentAtNode} from 'react-dom';
+import {act} from 'react-dom/test-utils';
 
-import ShowMoreButton from './ShowMoreButton/ShowMoreButton';
+import ShowMoreButton from './ShowMoreButton';
 
 let container = null;
-// const sampleCommit = {
-//   occurredAt: '',
-//   message: 'luciferche',
-//   repository: 'repo',
-//   commitCount: 2
-// };
 
 beforeEach(() => {
   // setup a DOM element as a render target
@@ -26,11 +20,13 @@ afterEach(() => {
 });
 
 it('Show buttonn without click function', () => {
+  const mockClick = jest.fn();
+
   act(() => {
-    render(<ShowMoreButton />, container);
+    render(<ShowMoreButton onClick={mockClick} text={'MOOORE'}/>, container);
   });
   // eslint-disable-next-line no-console
-  // expect(container
-  //   .querySelector('[data-testid="commitItem"]').innerHTML)
-  //   .toEqual('');
+  expect(container
+    .querySelector('button').textContent)
+    .toEqual('MOOORE');
 });

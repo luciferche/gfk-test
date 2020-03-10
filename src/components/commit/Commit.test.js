@@ -40,16 +40,16 @@ it('Shows Commit with data from commit', () => {
     render(<Commit commit={sampleCommit} key={32}/>, container);
   });
   const repo = container
-    .querySelector('[data-testid="repository"]').innerHTML;
+    .querySelector('[data-testid="repository"]').textContent;
   const occurredAt = container
-    .querySelector('[data-testid="occurredAt"]').innerHTML;
+    .querySelector('[data-testid="occurredAt"]').textContent;
   const commitCount = container
-    .querySelector('[data-testid="commitCount"]').innerHTML;
+    .querySelector('[data-testid="commitCount"]').textContent;
 
   expect(repo)
     .toEqual('repo');
   expect(occurredAt)
     .toEqual('');
   expect(commitCount)
-    .toEqual('# commits: 2');
+    .toEqual('commits # 2');
 });

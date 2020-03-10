@@ -1,8 +1,9 @@
 
 @import '../../stylesheets/colours';
 
+// padding: 12px 24px !important;
 
-header {
+[id^=root] header {
   box-shadow: 0 3px 5px -1px $shadowColor;
   padding: 12px 24px !important;
   position: relative;
@@ -14,10 +15,12 @@ header {
     vertical-align: middle;
     & + div {
       border: 1px solid $mainColor;
+      border-radius: 4px;
       float: right;
       margin-left: 24px;
       input {
         border: 0;
+        border-radius: 4px;
         outline: 0;
         padding: 9px 12px 11px;
         width: 240px;

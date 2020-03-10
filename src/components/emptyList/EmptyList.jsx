@@ -1,5 +1,5 @@
 import React from 'react';
-import Style from '../../stylesheets/Main.scss';
+import Style from './EmptyList.scss';
 
 /**
  * Helper function for rendering container with a message for an empty list

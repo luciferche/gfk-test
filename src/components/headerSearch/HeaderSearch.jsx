@@ -1,8 +1,5 @@
-/* eslint-disable no-console */
-
 import React from 'react';
 import Style from './HeaderSearch.scss';
-// import Style from '../../stylesheets/Main.scss';
 
 /**
  * Helper class for holding view with input box for username
@@ -18,11 +15,14 @@ class HeaderSearch extends React.Component {
       value: '',
       username: props.username
     };
-    console.log('this.username', this.state.username);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  /**
+   * Helper function to trigger click on enter pressed
+   * @param {keyDown event} e
+   */
   handleKeyDown(e) {
     if (e.key === 'Enter') {
       if (this.state.value.length > 2) { // don't search if there are no more than 2 characters entered
@@ -33,6 +33,10 @@ class HeaderSearch extends React.Component {
     }
   }
 
+  /**
+   *  on every user input local state is set with a new value
+   * @param {event} event
+   */
   handleChange(event) {
     const username = event.target.value;
     this.setState(() => ({
@@ -41,6 +45,11 @@ class HeaderSearch extends React.Component {
 
   }
 
+  /**
+   * RENDERS  header with title, input box and a button to search
+   * click on the button calls parent function that was passed down by
+   * @param {prop.onClick}
+   */
   render() {
     return (
       <header className={Style.header}>
@@ -57,6 +66,7 @@ class HeaderSearch extends React.Component {
             }} //hack for setting cursor to the end of input
             value={this.state.username}
             className={Style.input_search} />
+
           <button className={Style.btn_search} onClick={() => this.props.onClick(this.state.value)}>
             Search
           </button>

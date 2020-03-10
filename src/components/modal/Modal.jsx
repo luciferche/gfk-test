@@ -1,31 +1,22 @@
-/* eslint-disable no-console */
 import React from 'react';
 import CommitsModal from '../commitsModal/CommitsModal';
 
-class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: this.props.show
-    };
-    // this.commits = this.props.commits;
+/**
+ * Just a helper component for keeping track of the modal
+ * creating it and recreating it based on the props this Modal gets
+ * from parent
+ */
+const Modal = (props) => {
+  if (!props.show) {
+    return (<React.Fragment/>);
   }
-  render() {
-    console.log('this.props on modal render', this.props);
-    // console.log('this.props on modal STATE', this.state);
-    if (!this.props.show) {
-      return <React.Fragment/>;
-    }
-    // The gray background
 
-    return <CommitsModal
-      show={this.props.show}
-      username={this.props.username}
-      onClose={this.props.onClose}>
-    Here's some content for the modal
-    </CommitsModal>;
-    // return <CommitsModal commits={this.props.commits} onClose={this.props.onClose}/>;
-  }
-}
+  return (
+    <CommitsModal
+      show={props.show}
+      username={props.username}
+      onClose={props.onClose} />
+  );
+};
 
 export default Modal;

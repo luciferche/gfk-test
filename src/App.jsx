@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import Modal from './components/modal/Modal';
 import UserList from './components/userList/UserList';
@@ -18,16 +17,25 @@ class App extends React.Component {
     this.getUserCommits = this.getUserCommits.bind(this);
   }
 
+  /* Helper function for toggling modal open /close */
   toggleModal() {
     this.setState({
       isModalOpen: !this.state.isModalOpen
     });
   }
 
+  /**
+   * Function called on search button cick and passed down to the
+   * {@HeaderSearch component
+   *  Username passed to this function only changes the state of
+   * itself - {@UserList component reacts to that change
+   * @param {username to be used against search} username
+   */
   search(username) {
     if (!username) {
-      console.error(
-        'username provided falsy');
+      // console.error(
+      //   'username provided falsy');
+      //to-do add feedback to the user
       return;
     }
     this.setState(() => {
@@ -37,12 +45,10 @@ class App extends React.Component {
     });
   }
 
-  /* to-do check & remove async*/
-  async getUserCommits(username) {
+  getUserCommits(username) {
 
     this.setState((prevState) => {
       return {
-        // commitsToShow: fetchedCommits,
         isModalOpen: !prevState.isModalOpen,
         usernameToShow: username
       };
@@ -63,8 +69,7 @@ class App extends React.Component {
         </Modal>
         <UserList
           username={this.state.username}
-          onUserClick={this.getUserCommits}
-          toggleModal={this.toggleModal}/>
+          onUserClick={this.getUserCommits}/>
 
       </>
     );

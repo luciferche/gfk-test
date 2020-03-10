@@ -1,7 +1,11 @@
-import {template} from '@babel/core';
-
+/**
+ * Simplest tester for api service
+ * Since axios calls are wrrapped there I
+ * wanted to be able to test them separately
+ *
+ */
 const oneUser = {
-  login: 'luciferche',
+  username: 'luciferche',
   avatarUrl: 'https://avatars0.githubusercontent.com/u/94150?v=4',
   location: 'London',
   name: 'Luka',
@@ -23,7 +27,7 @@ const manyUsersResponse = (() => {
   const users = [];
   for (let i = 0; i < 6; i++) {
     users.push({
-      login: 'luka ' + i,
+      username: 'luka ' + i,
       avatarUrl: '',
       location: 'City ' + i,
       name: 'MyName ' + 1,
@@ -39,39 +43,7 @@ const manyUsersResponse = (() => {
 
   };
 })();
-// const resultListMany = {
-//   users: [
-//     {
-//       login: 'luk',
-//       avatarUrl: 'https://avatars0.githubusercontent.com/u/94150?v=4',
-//       location: 'London',
-//       name: 'Luk',
-//       updatedAt: '2020-03-9T06:27:30Z',
-//       id: '1',
-//       cursor: '1'
-//     },
-//     {
-//       login: 'luka',
-//       avatarUrl: '',
-//       location: '',
-//       name: 'Luka matovic',
-//       updatedAt: '2020-03-9T06:27:30Z',
-//       id: '2',
-//       cursor: '2'
-//     },
-//     {
-//       login: 'lukaa',
-//       avatarUrl: '',
-//       location: 'London',
-//       name: 'Luka adfsadf',
-//       updatedAt: '2020-03-9T06:27:30Z',
-//       id: '3',
-//       cursor: '3'
-//     }
-//   ],
-//   cursorLast: 2,
-//   hasMore: true
-// };
+
 const emptyObject = {
   users: [],
   cursorLast: null,
@@ -81,9 +53,9 @@ export default {
 
   getUsersByName: jest
     .fn()
-    .mockImplementation((username, fromCursor) => {
+    .mockImplementation(async (username, fromCursor) => {
       if (!username) {
-        return emptyObject;
+        throw new Error('Must provide username');
       }
       if (username === 'luciferche') {
         return oneUserListResponse;

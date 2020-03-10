@@ -1,0 +1,13 @@
+@import '../../stylesheets/colours';
+
+.user_list {
+  height: calc(100% - 62px);
+  overflow: auto;
+  padding: 24px;
+  width: 100%;
+  button {
+    display: block;
+    margin: 24px auto;
+    padding: 12px 24px;
+  }
+}

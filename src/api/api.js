@@ -4,18 +4,21 @@ import {searchUsersQuery, userActivityQuery} from './graph';
 
 // const GITHUB_URL = 'https://api.github.com/search'; //OLD API
 const githubUrl = 'https://api.github.com/graphql'; //new graphql api
-const githubToken = '565c75dbd633ba7d8980604d1d55ed1d6105996d';
 
 // The Authorization in the header of the request
-const authorization = {Authorization: 'bearer ' + githubToken};
+const authorization = {
+  Authorization: 'bearer ' + process.env.REACT_APP_GITHUB_API
+};
 
+// sorter for sorting commits in descending order by date
 const sortByDateDesc = (a, b) => {
   const dateA = new Date(a.occurredAt);
   const dateB = new Date(b.occurredAt);
   return dateB - dateA;
 };
 
-const parseResponse = (data) => {
+/* FUnction for parsing commit contributions by userr */
+const parseUserCommits = (data) => {
   // try {
   if (!data.data.user.contributionsCollection.commitContributionsByRepository.length) {
     console.log('empty contributions array');
@@ -52,7 +55,11 @@ const parseResponse = (data) => {
 
 };
 
-const parseUserData = (data) => {
+/** Parsing list of users coming from Github
+ * Adds cursor to the last user in set
+ * and a flag that there are more to fetch
+ */
+const parseUsers = (data) => {
 
   const result = {
     users: [],
@@ -92,6 +99,13 @@ const parseUserData = (data) => {
   return result;
 };
 
+/**
+ *  Async function calling Github GraphQL API
+ * fetchinng commit contributions by spefied user
+ * by repository, sorted by time
+ * @param {username to search by} userLogin
+ * @returns {commits }
+ */
 const getUserData = async (userLogin) => {
   if (!userLogin) {
     //username not passed to the component
@@ -113,7 +127,7 @@ const getUserData = async (userLogin) => {
     throw new Error('error fetching user commits');
   }
 
-  return parseResponse(response.data);
+  return parseUserCommits(response.data);
 };
 
 /**
@@ -133,16 +147,22 @@ const fetchUsers = async (name, from) => {
   }
   const fromCursor = from || null;
 
-  const Response = await axios.post(githubUrl,
+  const response = await axios.post(githubUrl,
     {
       query: searchUsersQuery,
       variables: {name, fromCursor}
     },
     {headers: authorization}
   );
+  if (response.errors) {
+    // eslint-disable-next-line guard-for-in
+    for (const err in response.errors) {
+      console.error('error ', err);
+    }
+    throw new Error('error fetching list of users');
+  }
 
-  const JSON = await Response.data;
-
+  const JSON = await response.data;
   if (JSON.errors) {
     // eslint-disable-next-line guard-for-in
     for (const err in JSON.errors) {
@@ -150,7 +170,7 @@ const fetchUsers = async (name, from) => {
     }
     throw new Error('error fetching user commits');
   }
-  return parseUserData(JSON);
+  return parseUsers(JSON);
 };
 
 export default {
