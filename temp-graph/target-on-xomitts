@@ -1,0 +1,17 @@
+ref(qualifiedName: "master") {
+      target {
+        ... on Commit {
+          id
+          history(first: 20) {
+            pageInfo {
+            hasNextPage
+          }
+          edges {
+            node {
+              messageHeadline
+              oid
+              message
+            }
+          }
+        }
+      }

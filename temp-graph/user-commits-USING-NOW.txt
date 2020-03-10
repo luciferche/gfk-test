@@ -1,0 +1,15 @@
+user(login: "luciferche") {
+    contributionsCollection {
+      commitContributionsByRepository {
+        contributions(orderBy: {field: OCCURRED_AT, direction: DESC}, first: 10) {
+          nodes {
+            commitCount
+            occurredAt
+          }
+        }
+        repository {
+          nameWithOwner
+        }
+      }
+    }
+  }

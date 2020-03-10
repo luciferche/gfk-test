@@ -1,0 +1,29 @@
+{
+  user(login: "luciferche") {
+    commitComments(first: 100) {
+      nodes {
+        commit {
+          repository {
+            nameWithOwner
+          }
+          abbreviatedOid
+        }
+        body
+      }
+    }
+    issueComments(first: 100) {
+      nodes {
+        repository {
+          nameWithOwner
+        }
+        issue {
+          number
+        }
+        pullRequest {
+          number
+        }
+        body
+      }
+    }
+  }
+}

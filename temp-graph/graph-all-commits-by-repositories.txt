@@ -1,0 +1,28 @@
+{
+  user(login: "luciferche") {
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+      }
+      commitContributionsByRepository {
+        repository {
+          id
+          nameWithOwner
+          commitComments(first: 10) {
+            nodes {
+              body
+              createdAt
+            }
+          }
+        }
+        contributions(last: 10, orderBy: {field: OCCURRED_AT, direction: ASC}) {
+          nodes {
+            commitCount
+            occurredAt
+          }
+          totalCount
+        }
+      }
+    }
+  }
+}
